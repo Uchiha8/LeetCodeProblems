@@ -5,7 +5,111 @@ import java.util.*;
 public class Solution {
     public static void main(String[] args) {
         Solution res = new Solution();
-        System.out.println(res.reverseWords("a good   example"));
+        int[] nums = {1, 12, -5, -6, 50, 3};
+        System.out.println(res.maxVowels2("nowels", 1));
+    }
+
+    public int maxVowels(String s, int k) {
+        int maxCount = 0;
+        HashSet<Character> set = new HashSet<>(Set.of('a', 'e', 'i', 'o', 'u'));
+        int count = 0;
+        int lIndex = 0;
+        for (int rIndex = 0; rIndex < s.length(); rIndex++) {
+            if (set.contains(s.charAt(rIndex))) {
+                count++;
+            }
+            if (rIndex - lIndex == k - 1) {
+                maxCount = Math.max(maxCount, count);
+                if (set.contains(s.charAt(lIndex))) {
+                    count--;
+                }
+                lIndex++;
+            }
+        }
+        maxCount = Math.max(maxCount, count);
+        return maxCount;
+    }
+
+    public int maxVowels2(String s, int k) {
+        int maxCount = 0;
+        HashSet<Character> set = new HashSet<>(Set.of('a', 'e', 'i', 'o', 'u'));
+        int count = 0;
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (set.contains(chars[i])) {
+                count++;
+            }
+            if (i >= k -1) {
+                maxCount = Math.max(maxCount, count);
+                if (set.contains(chars[i -(k - 1)])) count--;
+            }
+            if (maxCount >= k) return k;
+        }
+        return maxCount;
+    }
+
+    public double findMaxAverage(int[] nums, int k) {
+        double currentSum = 0;
+        double maxAverage = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            currentSum += nums[i];
+            if (i >= k - 1) {
+                double curAve = currentSum / (double) k;
+                maxAverage = Math.max(maxAverage, curAve);
+                currentSum -= nums[i - (k - 1)];
+            }
+        }
+        return maxAverage;
+    }
+
+    public int maxOperations(int[] nums, int k) {
+        int operation = 0;
+        HashMap<Integer, Integer> freqMap = new HashMap<>();
+        for (int num : nums) {
+            int complement = k - num;
+            if (freqMap.getOrDefault(complement, 0) > 0) {
+                operation++;
+                freqMap.put(complement, freqMap.get(complement) - 1);
+            } else {
+                freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+            }
+        }
+        return operation;
+    }
+
+    public int maxArea(int[] height) {
+        int maxArea = 0;
+        int lIndex = 0;
+        int rIndex = height.length - 1;
+        while (lIndex < rIndex) {
+            int size = rIndex - lIndex;
+            int min = Math.min(height[lIndex], height[rIndex]);
+            int currArea = size * min;
+            maxArea = Math.max(maxArea, currArea);
+            if (height[lIndex] < height[rIndex]) {
+                int currentLeft = height[lIndex];
+                while (lIndex < rIndex && height[lIndex] <= currentLeft) {
+                    lIndex++;
+                }
+            } else {
+                int currentRight = height[rIndex];
+                while (lIndex < rIndex && height[rIndex] <= currentRight) {
+                    rIndex--;
+                }
+            }
+        }
+        return maxArea;
+    }
+
+    public boolean isSubsequence(String s, String t) {
+        int sIndex = 0, tIndex = 0;
+        while (sIndex < s.length() && tIndex < t.length()) {
+            if (s.charAt(sIndex) == t.charAt(tIndex)) {
+                sIndex++;
+            }
+            tIndex++;
+        }
+        return sIndex == s.length();
     }
 
     public String reverseWords(String s) {
@@ -43,6 +147,7 @@ public class Solution {
         }
         return new String(res);
     }
+
 
     public boolean canPlaceFlowers(int[] flowerbed, int n) {
         int count = 0;
@@ -96,11 +201,9 @@ public class Solution {
         return str1.substring(0, gcdLength);
     }
 
-    // Helper method to find the GCD of two numbers
     private int gcd(int a, int b) {
         return b == 0 ? a : gcd(b, a % b);
     }
-
 
     public String mergeAlternately(String word1, String word2) {
         StringBuilder stringBuilder = new StringBuilder();

@@ -9,6 +9,20 @@ public class Solution {
         System.out.println(res.maxVowels2("nowels", 1));
     }
 
+//    public int pivotIndex(int[] nums) {
+//
+//    }
+
+    public int largestAltitude(int[] gain) {
+        int max = 0;
+        int curr = 0;
+        for (int alt : gain) {
+            curr += alt;
+            max = Math.max(max, curr);
+        }
+        return max;
+    }
+
     public int maxVowels(String s, int k) {
         int maxCount = 0;
         HashSet<Character> set = new HashSet<>(Set.of('a', 'e', 'i', 'o', 'u'));

@@ -5,8 +5,30 @@ import java.util.*;
 class Solution {
     public static void main(String[] args) {
         Solution solution = new Solution();
-        char[] chars = {'a','a','b','b','c','c','c'};
-        System.out.println(solution.compress(chars));
+        int[] nums = {1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0};
+        int k = 2;
+        System.out.println(solution.longestOnes(nums, k));
+    }
+
+    public int longestOnes(int[] nums, int k) {
+        int left = 0;
+        int right = 0;
+        int zeroCount = 0;
+        int maxLen = 0;
+        while (right < nums.length) {
+            if (nums[right] == 0) {
+                zeroCount++;
+            }
+            while (zeroCount > k) {
+                if (nums[left] == 0) {
+                    zeroCount--;
+                }
+                left++;
+            }
+            maxLen = Math.max(maxLen, right - left + 1);
+            right++;
+        }
+        return maxLen;
     }
 
     public int compress(char[] chars) {

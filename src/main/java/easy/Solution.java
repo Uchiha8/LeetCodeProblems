@@ -5,13 +5,52 @@ import java.util.*;
 public class Solution {
     public static void main(String[] args) {
         Solution res = new Solution();
-        int[] nums = {1, 12, -5, -6, 50, 3};
-        System.out.println(res.maxVowels2("nowels", 1));
+        int[] arr = {-3,0,1,-3,1,1,1,-3,10,0};
+        System.out.println(res.uniqueOccurrences(arr));
     }
 
-//    public int pivotIndex(int[] nums) {
-//
-//    }
+    public boolean uniqueOccurrences(int[] arr) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : arr) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        return map.size() == new HashSet<>(map.values()).size();
+    }
+
+    public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> set2 = new HashSet<>();
+        for (int num : nums1) set1.add(num);
+        for (int num : nums2) set2.add(num);
+        return Arrays.asList(
+                getUniqueValue(set1, set2),
+                getUniqueValue(set2, set1)
+        );
+    }
+
+    private static List<Integer> getUniqueValue(Set<Integer> set1, Set<Integer> set2) {
+        List<Integer> list = new ArrayList<>();
+        for (Integer num : set1) {
+            if (!set2.contains(num)) list.add(num);
+        }
+        return list;
+    }
+
+    public int pivotIndex(int[] nums) {
+        int rSum = 0;
+        int lSum = 0;
+        for (int num : nums) {
+            rSum += num;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            rSum -= nums[i];
+            if (rSum == lSum) {
+                return i;
+            }
+            lSum += nums[i];
+        }
+        return -1;
+    }
 
     public int largestAltitude(int[] gain) {
         int max = 0;
@@ -53,9 +92,9 @@ public class Solution {
             if (set.contains(chars[i])) {
                 count++;
             }
-            if (i >= k -1) {
+            if (i >= k - 1) {
                 maxCount = Math.max(maxCount, count);
-                if (set.contains(chars[i -(k - 1)])) count--;
+                if (set.contains(chars[i - (k - 1)])) count--;
             }
             if (maxCount >= k) return k;
         }
